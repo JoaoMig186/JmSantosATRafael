@@ -1,12 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using JmSantosAT_Final_Rafael.Data;
+using JmSantosAT_Final_Rafael.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<JmSantosAT_Final_RafaelContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("JmSantosAT_Final_RafaelContext") ?? throw new InvalidOperationException("Connection string 'JmSantosAT_Final_RafaelContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IAmigo, AmigoRepository>();
+builder.Services.AddScoped<IPais, PaisRepository>();
+builder.Services.AddScoped<ReadOnly>();
 
 var app = builder.Build();
 
@@ -27,6 +33,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Amigoes}/{action=Index}/{id?}");
 
 app.Run();

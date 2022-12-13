@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using JmSantosAT_Final_Rafael.Data;
 using JmSantosAT_Final_Rafael.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JmSantosAT_Final_Rafael.Controllers
 {
@@ -54,6 +55,7 @@ namespace JmSantosAT_Final_Rafael.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Create([Bind("EstadosId,EstadosNome,EstadoImagem")] Estado estado)
         {
             if (ModelState.IsValid)

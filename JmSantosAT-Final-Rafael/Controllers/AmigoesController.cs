@@ -13,16 +13,19 @@ namespace JmSantosAT_Final_Rafael.Controllers
     public class AmigoesController : Controller
     {
         private readonly JmSantosAT_Final_RafaelContext _context;
-
-        public AmigoesController(JmSantosAT_Final_RafaelContext context)
+        private readonly IAmigo _amigoRepository;
+        public AmigoesController(IAmigo amigoRepository, JmSantosAT_Final_RafaelContext context)
         {
-            _context = context;
+            _amigoRepository = amigoRepository;
+            _context = context; 
         }
 
         // GET: Amigoes
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Amigo.ToListAsync());
+            IEnumerable<Amigo> amigos;
+            amigos = _amigoRepository.GetAllFriends().OrderBy(p => p.AmigoId);
+            return View(amigos);
         }
 
         // GET: Amigoes/Details/5

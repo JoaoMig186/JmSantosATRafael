@@ -4,6 +4,7 @@ using JmSantosAT_Final_Rafael.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JmSantosAT_Final_Rafael.Migrations
 {
     [DbContext(typeof(JmSantosAT_Final_RafaelContext))]
-    partial class JmSantosAT_Final_RafaelContextModelSnapshot : ModelSnapshot
+    [Migration("20221123015900_AzureMigration")]
+    partial class AzureMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,21 @@ namespace JmSantosAT_Final_Rafael.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("EstadoPais", b =>
+                {
+                    b.Property<int>("EstadosListaEstadosId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaisesListaPaisId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EstadosListaEstadosId", "PaisesListaPaisId");
+
+                    b.HasIndex("PaisesListaPaisId");
+
+                    b.ToTable("EstadoPais");
+                });
 
             modelBuilder.Entity("JmSantosAT_Final_Rafael.Models.Amigo", b =>
                 {
@@ -85,12 +102,10 @@ namespace JmSantosAT_Final_Rafael.Migrations
                     b.Property<string>("EstadosNome")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PaisId")
+                    b.Property<int>("EstadosSelect")
                         .HasColumnType("int");
 
                     b.HasKey("EstadosId");
-
-                    b.HasIndex("PaisId");
 
                     b.ToTable("Estado");
                 });
@@ -103,9 +118,6 @@ namespace JmSantosAT_Final_Rafael.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaisId"), 1L, 1);
 
-                    b.Property<int>("EstadosId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PaisImagem")
                         .HasColumnType("nvarchar(max)");
 
@@ -117,6 +129,21 @@ namespace JmSantosAT_Final_Rafael.Migrations
                     b.ToTable("Pais");
                 });
 
+            modelBuilder.Entity("EstadoPais", b =>
+                {
+                    b.HasOne("JmSantosAT_Final_Rafael.Models.Estado", null)
+                        .WithMany()
+                        .HasForeignKey("EstadosListaEstadosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JmSantosAT_Final_Rafael.Models.Pais", null)
+                        .WithMany()
+                        .HasForeignKey("PaisesListaPaisId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("JmSantosAT_Final_Rafael.Models.Amigo", b =>
                 {
                     b.HasOne("JmSantosAT_Final_Rafael.Models.Amigo", null)
@@ -124,25 +151,9 @@ namespace JmSantosAT_Final_Rafael.Migrations
                         .HasForeignKey("AmigoId1");
                 });
 
-            modelBuilder.Entity("JmSantosAT_Final_Rafael.Models.Estado", b =>
-                {
-                    b.HasOne("JmSantosAT_Final_Rafael.Models.Pais", "Paises")
-                        .WithMany("EstadoLista")
-                        .HasForeignKey("PaisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Paises");
-                });
-
             modelBuilder.Entity("JmSantosAT_Final_Rafael.Models.Amigo", b =>
                 {
                     b.Navigation("AmigosLista");
-                });
-
-            modelBuilder.Entity("JmSantosAT_Final_Rafael.Models.Pais", b =>
-                {
-                    b.Navigation("EstadoLista");
                 });
 #pragma warning restore 612, 618
         }

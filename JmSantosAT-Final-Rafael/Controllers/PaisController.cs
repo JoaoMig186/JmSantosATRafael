@@ -7,22 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using JmSantosAT_Final_Rafael.Data;
 using JmSantosAT_Final_Rafael.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JmSantosAT_Final_Rafael.Controllers
 {
     public class PaisController : Controller
     {
         private readonly JmSantosAT_Final_RafaelContext _context;
+        private readonly IPais _paisRepository;
 
-        public PaisController(JmSantosAT_Final_RafaelContext context)
+        public PaisController(IPais paisRepository, JmSantosAT_Final_RafaelContext context)
         {
+            _paisRepository = paisRepository;
             _context = context;
         }
 
         // GET: Pais
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Pais.ToListAsync());
+            IEnumerable<Pais> paises;
+            paises = _paisRepository.TodosPaises().OrderBy(p => p.PaisId);
+            return View(paises);
         }
 
         // GET: Pais/Details/5
